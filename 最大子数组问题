@@ -112,5 +112,4 @@ function maxSubArr($arr){
 }  
   
   
-//var_dump(maxSubArr($arr));</pre><br>  
-<br>  
+//var_dump(maxSubArr($arr));
