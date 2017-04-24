@@ -1,0 +1,116 @@
+求解数组的最大子数组
+/*
+求解数组的最大子数组
+最大子数组定义：
+数组的和最大的非空连续子数组
+测试数组：$arr = array(13,-3,-25,20,-3,-16,-23,18,20,-7,12,-5,-22,15,-4,7);
+最大子数组 $arr1 = array(18,20,-7,12); //和为43
+*/
+
+
+方法一：暴力求解法  
+
+
+/* 
+方法一：暴力求解法 
+没什么新鲜的，两层for循环穷举法*/  
+function maxSonArr($arr){  
+    $max=$arr[0];  
+    $num = count($arr);  
+    for($m=0;$m<$num;$m++){  
+        $sum = $arr[$m];  
+        for($n=$m+1;$n<$num;$n++){  
+            $sum += $arr[$n];  
+            if($sum>$max){  
+                $max = $sum;  
+                $left = $m;  
+                $right = $n;  
+            }  
+        }  
+    }  
+    $sonArr = array($max,$left,$right);  
+    return $sonArr;  
+}         // 0   1   2  3  4  5   6  7   8  9 10 11  12 13 14 15  
+$arr = array(13,-3,-25,20,-3,-16,-23,18,20,-7,12,-5,-22,15,-4,7);  
+print_r( maxSonArr($arr));  
+
+
+
+
+方法二：分治求解法
+将数组划分为两个尽量相等的子数组，下标直接取中间值即可。
+此时，该子数组所处的位置有以下三种可能
+一、完全位于0-mid子数组中
+二、完全位于mid-count(arr)子数组中
+三、跨越中间点 low<mid<high
+
+
+其中，这个方法代码太冗余了，可以通过使用递归简化代码
+可以将左边最大值、右边最大值看作包含中间元素的左边、右边最大值的递归
+eg：数组20个元素，假设左边最大值为元素序号3-6 可以递归到边界为5，此时就是包含中间元素了  ，代码就不写了
+
+function maxSubArr($arr){  
+    $num = count($arr);  
+    $mid = floor($num/2);  
+    $leftMaxSum = $arr[$mid];  
+    $rightMaxSum = $arr[$mid+1];  
+    //左边最大值  
+    for($m=$mid-1;$m>=0;$m--){  
+        $lsftSum = $arr[$m];  
+        for($n=$m-1;$n>=0;$n--){  
+            $lsftSum += $arr[$n];  
+            if($leftMaxSum<$leftSum){  
+                $leftMaxSum = $leftSum;  
+            }  
+        }  
+    }  
+  
+  
+    //右边最大值  
+    for($m=$mid;$m<$num;$m++){  
+        $rightSum = $arr[$m];  
+        for($n=$m+1;$n<$num;$n++){  
+            $rightSum += $arr[$n];  
+            if($rightMaxSum<$rightSum){  
+                $rightMaxSum = $rightSum;  
+            }  
+        }  
+    }  
+  
+  
+  
+  
+    //包含中间的左边最大值  
+    for($m=$mid-1;$m>=0;$m--){  
+        $leftMidSum += $arr[$m];  
+        if($leftMidMaxSum<$leftMidSum){  
+            $leftMidMaxSum = $leftMidSum;  
+        }  
+    }  
+    //包含中间的右边最大值  
+    for($m=$mid;$m<=$num;$m++){  
+        $rightMidSum += $arr[$m];  
+        if($rightMidMaxSum<$rightMidSum){  
+            $rightMidMaxSum = $rightMidSum;  
+        }  
+    }  
+    $midMaxSum = $leftMidMaxSum+$rightMidMaxSum;  
+  
+  
+    $MaxSubSum = $rightMaxSum;  
+    if($leftMaxSum>$MaxSubSum){  
+        $MaxSubSum = $leftMaxSum;  
+    }  
+    if($midMaxSum>$MaxSubSum){  
+        $MaxSubSum = $leftMidMaxSum + $rightMidMaxSum;  
+    }  
+  
+  
+    return $MaxSubSum;  
+  
+  
+}  
+  
+  
+//var_dump(maxSubArr($arr));</pre><br>  
+<br>  
